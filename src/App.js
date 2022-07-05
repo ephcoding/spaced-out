@@ -21,7 +21,7 @@ export default function App() {
   const keys = Object.keys(data).map((key) => <p key={key}>{key}</p>);
 
   return (
-    <>
+    <div className="min-h-screen bg-stone-800 text-stone-100">
       <div>{keys}</div>
       <Card bordered={true} compact={true} className="w-[50vw]">
         <Card.Image src={data.url} alt="NASA Photo of the Day" />
@@ -36,6 +36,6 @@ export default function App() {
           </Collapse>
         </Card.Body>
       </Card>
-    </>
+    </div>
   );
 }
