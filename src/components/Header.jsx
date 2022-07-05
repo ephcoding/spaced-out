@@ -5,7 +5,9 @@ export const Header = () => {
   return (
     <Navbar>
       <Navbar.Start>
-        <span className="text-3xl font-bold">SPACED OUT</span>
+        <RouterLink to="/">
+          <span className="text-3xl font-bold">SPACED OUT</span>
+        </RouterLink>
       </Navbar.Start>
       <nav>
         <Navbar.End>
