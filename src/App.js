@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react"; // Suspense, // useTransition, // useState, // useMemo, // useEffect, // useDeferredValue, // useCallback,
+import { Button, Card, Collapse } from "react-daisyui";
 
-function App() {
+import { useQuery } from "react-query";
+
+export default function App() {
+  const { data, error, isLoading } = useQuery(["APOD", "today"], async () => {
+    const raw = await fetch(
+      `https://api.nasa.gov/planetary/apod?api_key=${process.env.REACT_APP_NASA_KEY}`
+    );
+    return await raw.json();
+  });
+
+  if (error) {
+    return <p>{error.message}</p>;
+  }
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  const keys = Object.keys(data).map((key) => <p key={key}>{key}</p>);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div>{keys}</div>
+      <Card bordered={true} compact={true} className="w-[50vw]">
+        <Card.Image src={data.url} alt="NASA Photo of the Day" />
+        <Card.Title className="text-3xl text-red-500">{data.title}</Card.Title>
+        <Card.Body>
+          <Collapse checkbox={true}>
+            <Collapse.Title>{`${data.explanation.slice(
+              0,
+              40
+            )}...`}</Collapse.Title>
+            <Collapse.Content>{data.explanation}</Collapse.Content>
+          </Collapse>
+        </Card.Body>
+      </Card>
+    </>
   );
 }
-
-export default App;
